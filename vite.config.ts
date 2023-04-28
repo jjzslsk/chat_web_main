@@ -39,7 +39,14 @@ export default defineConfig((env) => {
         '/v1/chat': {
           target: viteEnv.VITE_APP_API_BASE_URL,
           changeOrigin: true, // 允许跨域
-          // rewrite: path => path.replace('/chat/', '/'),
+        },
+        '/chat/queryaction': {
+          target: viteEnv.VITE_APP_API_BASE_URL,
+          changeOrigin: true, // 允许跨域
+        },
+        '/api': {
+          target: viteEnv.VITE_APP_API_BASE_URL_JSON,
+          changeOrigin: true, // 允许跨域
         },
       },
     },
@@ -50,6 +57,5 @@ export default defineConfig((env) => {
         ignoreTryCatch: false,
       },
     },
-		base: '/chat/', // 设置公共路径为 /chat/
   }
 })

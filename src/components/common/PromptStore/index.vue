@@ -315,13 +315,14 @@ watch(
 )
 
 const dataSource = computed(() => {
-  const data = renderTemplate()
+  let data = renderTemplate()
   const value = searchValue.value
   if (value && value !== '') {
     return data.filter((item: DataProps) => {
       return item.renderKey.includes(value) || item.renderValue.includes(value)
     })
   }
+  data = data.filter((i: any)=> i.key != "自有知识库" && i.key != "外部API" && i.key != "默认AI")
   return data
 })
 </script>

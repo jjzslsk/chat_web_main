@@ -48,8 +48,6 @@ const promptStore = usePromptStore()
 
 // 使用storeToRefs，保证store修改后，联想部分能够重新渲染
 const { promptList: promptTemplate } = storeToRefs<any>(promptStore)
-console.log("promptTemplate:",promptTemplate);
-
 
 // 未知原因刷新页面，loading 状态不会重置，手动重置
 dataSources.value.forEach((item, index) => {
@@ -111,13 +109,7 @@ async function onConversation() {
   try {
     let lastText = ''
     const fetchChatAPIOnce = async () => {
-      // debugger
-      
       console.log(message);
-      if(message == ''){
-
-      }
-      
       await fetchChatAPIProcess<Chat.ConversationResponse>({
         prompt: message,
         options,
@@ -152,7 +144,6 @@ async function onConversation() {
               message = ''
               return fetchChatAPIOnce()
             }
-
             scrollToBottomIfAtBottom()
           }
           catch (error) {
@@ -167,8 +158,6 @@ async function onConversation() {
   }
   catch (error: any) {
     // const errorMessage = error?.message ?? t('common.wrong')
-
-    console.log(error, '-----')
 		const errorMessage = error?.message ?? t(error.choices[0].message.content)
 
     if (error.message === 'canceled') {
@@ -428,44 +417,22 @@ function handleStop() {
 // 搜索选项计算，这里使用value作为索引项，所以当出现重复value时渲染异常(多项同时出现选中效果)
 // 理想状态下其实应该是key作为索引项,但官方的renderOption会出现问题，所以就需要value反renderLabel实现
 const searchOptions = computed(() => {
-  console.log(1);
-  console.log(promptTemplate.value);
-  const arr: object[] = [] 
-  if(promptTemplate.value.length == 0){
-    arr.unshift({
+  const arr: object[] = promptTemplate.value
+  if(arr.length == 0){
+    arr.push({
         key: "自有知识库",
         value: "自有知识库：",
       })
-      arr.unshift({
+      arr.push({
         key: "外部API",
         value: "外部API：",
       })
-      arr.unshift({
+      arr.push({
         key: "默认AI",
         value: "默认AI：",
       })
-  }else{
-    if(promptTemplate.value[0].key != "自有知识库"){
-        arr.unshift({
-          key: "自有知识库",
-          value: "自有知识库：",
-        })
-        arr.unshift({
-          key: "外部API",
-          value: "外部API：",
-        })
-        arr.unshift({
-          key: "默认AI",
-          value: "默认AI：",
-        })
-    }
   }
-  arr.map(i=>{
-    promptTemplate.value.unshift(i)
-  })
-  // console.log(prompt.value);
   if (prompt.value.startsWith('/')) {
-    console.log(2);
     return promptTemplate.value.filter((item: { key: string }) => item.key.toLowerCase().includes(prompt.value.substring(1).toLowerCase())).map((obj: { value: any }) => {
     console.log(3);
       return {
@@ -477,8 +444,6 @@ const searchOptions = computed(() => {
   else {
     return []
   }
-  // const list: object[] = promptTemplate.value.splice(0, 2);
-  // promptTemplate.value = list
 })
 
 // value反渲染key

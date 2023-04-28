@@ -20,19 +20,6 @@ export function fetchChatConfig<T = any>() {
   })
 }
 
-export function getData<T>( data:T ) {
-  console.log('data:',data);
-  return post<T>({
-    url: '/chat/queryaction',
-    headers: { 'Authorization':'Bearer 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' },
-		data: {
-          "model": "gpt-3.5-turbo",
-          "messages": [{"role": "user", "content": "123"} ],
-          "temperature": 0.7
-    }
-  })
-}
-
 export function fetchChatAPIProcess<T = any>(
   params: {
     prompt: string
@@ -60,18 +47,20 @@ export function fetchChatAPIProcess<T = any>(
 
 
 let url: string = "";
-if(params.prompt.includes("自有知识库：")){
+if(params.prompt.slice(0,6) === "自有知识库："){
   url = `/chat/queryaction?type=0&query=${params.prompt}`
   params.prompt = params.prompt.slice(6)
   data.messages[0].content = data.messages[0].content.slice(6)
-}else if(params.prompt.includes("外部API：")){
+}else if(params.prompt.slice(0,6) === "外部API："){
   url = `/chat/queryaction?type=1&query=${params.prompt}`
   params.prompt = params.prompt.slice(6)
   data.messages[0].content = data.messages[0].content.slice(6)
-}else if(params.prompt.includes("默认AI：")){
+}else if(params.prompt.slice(0,5) === "默认AI："){
   params.prompt = params.prompt.slice(5)
   data.messages[0].content = data.messages[0].content.slice(5)
   url = '/v1/chat/completions'
+} else if(params.prompt.includes("天气")){
+  url = `/api?unescape=1&version=v1&appid=85841439&appsecret=EKCDLT4I`
 } else {
 	url = '/v1/chat/completions'
 }
