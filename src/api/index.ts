@@ -59,13 +59,13 @@ if(params.prompt.slice(0,6) === "自有知识库："){
   params.prompt = params.prompt.slice(5)
   data.messages[0].content = data.messages[0].content.slice(5)
   url = '/v1/chat/completions'
-} else if(params.prompt.includes("天气")){
+} else if(params.prompt.slice(0,2) === ("天气")){
   url = `/api?unescape=1&version=v1&appid=85841439&appsecret=EKCDLT4I`
 } else {
 	url = '/v1/chat/completions'
 }
 
-//chatgpt key
+//chatgpt key 
 let headers: string = "";
 
 return post<T>({

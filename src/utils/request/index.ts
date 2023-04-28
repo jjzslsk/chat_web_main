@@ -46,10 +46,6 @@ function http<T = any>(
   method = method || 'GET'
 
   const params = Object.assign(typeof data === 'function' ? data() : data ?? {}, {})
-console.log(headers);
-console.log(params);
-console.log(signal);
-  // debugger
   return method === 'GET'
     ? request.get(url, { params, signal, onDownloadProgress }).then(successHandler, failHandler)
     : request.post(url, params, { headers, signal, onDownloadProgress }).then(successHandler, failHandler)
