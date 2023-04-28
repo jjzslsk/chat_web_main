@@ -65,9 +65,12 @@ if(params.prompt.slice(0,6) === "自有知识库："){
 	url = '/v1/chat/completions'
 }
 
+//chatgpt key
+let headers: string = "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";
+
 return post<T>({
   url: url,
-  headers: { 'Authorization':'Bearer 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' },
+  headers: { 'Authorization': `Bearer ${headers}` },
   data,
   signal: params.signal,
   onDownloadProgress: params.onDownloadProgress,
