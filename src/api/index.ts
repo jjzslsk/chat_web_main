@@ -66,7 +66,7 @@ if(params.prompt.slice(0,6) === "自有知识库："){
 }
 
 //chatgpt key
-let headers: string = "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";
+let headers: string = "";
 
 return post<T>({
   url: url,
